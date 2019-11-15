@@ -39,26 +39,31 @@ public class mySentenceDetector {
     }
 
     private List<String> sentenceDetect() throws IOException {
-        //Refer to model file "en-sent.bin"
-        InputStream sentDetectModelStream = new FileInputStream("en-sent.bin");
+        try{
+            //Refer to model file "en-sent.bin"
+            InputStream sentDetectModelStream = new FileInputStream("nlp_programming_exercise/en-sent.bin");
 
-        //Create a new sentence Model
-        SentenceModel model = new SentenceModel(sentDetectModelStream);
+            //Create a new sentence Model
+            SentenceModel model = new SentenceModel(sentDetectModelStream);
 
-        //Load the model we will use for sentence detection
-        SentenceDetectorME sentDetector = new SentenceDetectorME(model);
+            //Load the model we will use for sentence detection
+            SentenceDetectorME sentDetector = new SentenceDetectorME(model);
 
-        //Fix an issue I noticed in the Apache package
-        this.paragraph = cleanSentencesStartingWithQuotation(this.paragraph);
+            //Fix an issue I noticed in the Apache package
+            this.paragraph = cleanSentencesStartingWithQuotation(this.paragraph);
 
-        //Detect sentences in the paragraph and add them to the list
-        List<String> sentences = Arrays.asList(sentDetector.sentDetect(this.paragraph));
+            //Detect sentences in the paragraph and add them to the list
+            List<String> sentences = Arrays.asList(sentDetector.sentDetect(this.paragraph));
 
-        //Close the Model
-        sentDetectModelStream.close();
+            //Close the Model
+            sentDetectModelStream.close();
 
-        //Return the array of sentence;
-        return sentences;
+            //Return the array of sentence;
+            return sentences;
+        }catch(Exception e){
+            System.out.println("Unexpected Error while parsing sentences! Error: " + e.getMessage());
+            return new LinkedList<>();
+        }
     }
 
     /*
